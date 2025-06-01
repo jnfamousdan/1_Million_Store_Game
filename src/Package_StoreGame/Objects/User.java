@@ -1,4 +1,4 @@
-package Package_StoreGame;
+package Package_StoreGame.Objects;
 
 public class User {
     private String name;
@@ -9,6 +9,8 @@ public class User {
 
     public User(String name) {
         this.name = name;
+        this.Inventory_Apple = 0;
+        this.Balance = 100;
     }
 
     public String getName() {

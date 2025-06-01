@@ -1,4 +1,4 @@
-package Package_StoreGame;
+package Package_StoreGame.Objects;
 
 public class Items {
     private String name;
