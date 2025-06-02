@@ -68,6 +68,99 @@ public class Service {
         }
         return false;
     }
+    
+    public static void purchaseApples(Scanner scanner, User mainPlayer, Merchant merchant){
+        String Msg_1 = "merchant or you cannot afford that... Please try another value.";
+        String Msg_2 = "How many Apples would you like to purchase? Enter 0 to return...";
+        boolean Can_Purchase = true;
+        boolean isTrading = false;
+
+        while(!isTrading) {
+            SkipLines(100);
+            System.out.println("-------------------------------------------------");
+            System.out.println(merchant.getName() + " has " + merchant.getApple_Inventory() + " apples.");
+            System.out.println("The current price is " + merchant.getPrice());
+            System.out.println(" ");
+            System.out.println("Your balance is: $" + mainPlayer.getBalance());
+            System.out.println("Apple balance is: " + mainPlayer.getInventory_Apple());
+            System.out.println(" ");
+
+            int Max_Purchase;
+            if(merchant.getApple_Inventory() < (mainPlayer.getBalance() / merchant.getPrice())){
+                Max_Purchase = merchant.getApple_Inventory();
+            }else{
+                Max_Purchase = mainPlayer.getBalance() / merchant.getPrice();
+            }
+
+            System.out.println("You may purchase up to " + Max_Purchase);
+            System.out.println("-------------------------------------------------");
+            if(Can_Purchase){
+                System.out.println(Msg_2);
+            }else{
+                System.out.println(Msg_1);
+                Can_Purchase = true;
+            }
+
+            int Input_2 = scanner.nextInt();
+
+            if(Input_2 == 0){   //if the input is zero, we can exit.
+                isTrading = true;
+            }else if( Input_2 > merchant.getApple_Inventory()) {    //if the entered qty is higher than what the merchant has, cant
+                Can_Purchase = false;
+            }else if(mainPlayer.getBalance() - (Input_2 * merchant.getPrice()) < 0){    //if the user balance will result to become low, cant
+                Can_Purchase = false;
+            }else{  //At this point, we can process the transaction
+                merchant.setApple_Inventory(merchant.getApple_Inventory() - Input_2);
+                mainPlayer.setInventory_Apple(mainPlayer.getInventory_Apple() + Input_2);
+
+                mainPlayer.setBalance(mainPlayer.getBalance() - (Input_2 * (merchant.getPrice())));
+            }
+        }
+        isTrading = false;
+    }
+
+    public static void sellApples(Scanner scanner, User mainPlayer, Merchant merchant){
+
+        String Msg_1 = "merchant or you cannot afford that... Please try another value.";
+        String Msg_2 = "How many Apples would you like to sell? Enter 0 to return...";
+        boolean Can_Purchase = true;
+        boolean isTrading = false;
+
+        while(!isTrading) {
+            SkipLines(100);
+            System.out.println("-------------------------------------------------");
+            System.out.println(merchant.getName() + " has " + merchant.getApple_Inventory() + " apples.");
+            System.out.println("The current price is $" + merchant.getPrice());
+            System.out.println(" ");
+            System.out.println("Your balance is: $" + mainPlayer.getBalance());
+            System.out.println("Apple balance is: " + mainPlayer.getInventory_Apple());
+            System.out.println("-------------------------------------------------");
+            if(Can_Purchase){
+                System.out.println(Msg_2);
+            }else{
+                System.out.println(Msg_1);
+                Can_Purchase = true;
+            }
+            int Input_2 = scanner.nextInt();
+
+            if(Input_2 == 0){   //if the input is zero, we can exit.
+                isTrading = true;
+            }else if( Input_2 > mainPlayer.getInventory_Apple()) {    //if the entered qty is higher than what the user has, cant
+                Can_Purchase = false;
+            }else{  //At this point, we can process the transaction
+                merchant.setApple_Inventory(merchant.getApple_Inventory() + Input_2);
+                mainPlayer.setInventory_Apple(mainPlayer.getInventory_Apple() - Input_2);
+
+                mainPlayer.setBalance(mainPlayer.getBalance() + (Input_2 * (merchant.getPrice())));
+            }
+        }
+        isTrading = false;
+    }
+    
+    
+    
+    
+    
     private static void SkipLines(int j){
         for(int i=1; i<=j;i++){
             System.out.println(" ");
